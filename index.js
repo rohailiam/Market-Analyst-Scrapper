@@ -3,6 +3,7 @@ const Cheerio = require('cheerio');
 const express =  require('express');    
 
 const app = express();
+const hostname = '0.0.0.0'
 const port = 3000;
 
 
@@ -66,5 +67,5 @@ async function getUpcomingnftData(){
 // receive();
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`server running at http://${hostname}:${port}/`)
   })
