@@ -11,6 +11,9 @@ app.get('/getupcomingnft', async (req, res) => {
     res.json( await getUpcomingnftData())
   })
 
+  app.get('/', async (req, res) => {
+    res.status(200).send('running');
+  })
   
 async function getUpcomingnftData(){
     const url = 'https://upcomingnft.net/most-popular-events/';
