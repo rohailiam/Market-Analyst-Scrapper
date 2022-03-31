@@ -17,7 +17,7 @@ app.get('/getupcomingnft', async (req, res) => {
   
 async function getUpcomingnftData(){
     const url = 'https://upcomingnft.net/most-popular-events/';
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     console.log('tab created');
     await page.goto(url, { waitUntil: 'networkidle0' });
