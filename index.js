@@ -65,6 +65,7 @@ async function getUpcomingnftData(){
 
 } 
 
+
 // async function receive(){
 //     var result =  await getUpcomingnftData();
 //     console.log(result);
