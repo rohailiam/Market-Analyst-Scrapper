@@ -8,7 +8,7 @@ const port = 3000;
 
 
 app.get('/getupcomingnft', async (req, res) => {
-    res.json( await getUpcomingnftData())
+    res.status(200).json( await getUpcomingnftData())
   })
 
   app.get('/', async (req, res) => {
