@@ -46,15 +46,15 @@ async function getUpcomingnftData(){
                 childData['supply'] = $(element).text().trim();
             }
             if(index === 7){
-                childData['twitter-follower'] = $(element).text().trim();
-                childData['twitter-link'] = $(element).find('a').attr('href');
+                childData['twitterfollower'] = $(element).text().trim();
+                childData['twitterlink'] = $(element).find('a').attr('href');
             }
             if(index === 8){
-                childData['discord-number'] = $(element).text().trim();
-                childData['discord-link'] = $(element).find('a').attr('href');
+                childData['discordnumber'] = $(element).text().trim();
+                childData['discordlink'] = $(element).find('a').attr('href');
             }
             if(index === 9){
-                childData['website-link'] = $(element).find('a').attr('href');
+                childData['websitelink'] = $(element).find('a').attr('href');
             }
             // console.dir(element)
         })
