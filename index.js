@@ -27,7 +27,7 @@ async function getData(){
     await page.goto('https://upcomingnft.net/most-popular-events/', { waitUntil: 'networkidle0' });
     console.log('page fetched');
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
-    data['upcomingnft'] = await JSON.stringify(getUpcomingnftData(htmlData));
+    data['upcomingnft'] = await getUpcomingnftData(htmlData);
 
 
 
