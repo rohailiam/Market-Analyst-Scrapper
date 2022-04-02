@@ -28,7 +28,10 @@ async function getData(){
     console.log('page fetched');
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
     data['upcomingnft'] = getUpcomingnftData(htmlData);
-    return JSON.stringify(data);
+
+
+
+    return data;
 }
 
 async function getUpcomingnftData(htmlData){
