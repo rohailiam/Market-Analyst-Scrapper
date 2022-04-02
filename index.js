@@ -1,30 +1,46 @@
 const puppeteer = require('puppeteer');
 const Cheerio = require('cheerio');
 const express =  require('express');    
+const { data } = require('cheerio/lib/api/attributes');
 
 const app = express();
 const hostname = '0.0.0.0'
 const port = 3000;
 
 
-app.get('/getupcomingnft', async (req, res) => {
-    res.status(200).json( await getUpcomingnftData())
+app.get('/getscrapeddata', async (req, res) => {
+    res.status(200).json( await getData())
   })
 
   app.get('/', async (req, res) => {
     res.status(200).send('running');
   })
   
-async function getUpcomingnftData(){
-    const url = 'https://upcomingnft.net/most-popular-events/';
+
+async function getData(){
+    var data = {};
     const browser = await puppeteer.launch({
         headless: true, 
         args: ['--no-sandbox'] });
     const page = await browser.newPage();
     console.log('tab created');
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.goto('https://upcomingnft.net/most-popular-events/', { waitUntil: 'networkidle0' });
     console.log('page fetched');
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
+    data['upcomingnft'] = getUpcomingnftData(htmlData);
+    return JSON.stringify(data);
+}
+
+async function getUpcomingnftData(htmlData){
+    // const url = 'https://upcomingnft.net/most-popular-events/';
+    // const browser = await puppeteer.launch({
+    //     headless: true, 
+    //     args: ['--no-sandbox'] });
+    // const page = await browser.newPage();
+    // console.log('tab created');
+    // await page.goto(url, { waitUntil: 'networkidle0' });
+    // console.log('page fetched');
+    // const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
     // console.log(htmlData);
     var $ = Cheerio.load(htmlData);
@@ -60,17 +76,10 @@ async function getUpcomingnftData(){
         })
         formatedData.push(childData);
     });
-    // console.log(formatedData);
+    console.log('data scraped');
     return formatedData;
 
 } 
-
-
-// async function receive(){
-//     var result =  await getUpcomingnftData();
-//     console.log(result);
-// }
-// receive();
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server running at http://${hostname}:${port}/`)
