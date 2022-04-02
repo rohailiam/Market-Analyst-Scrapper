@@ -27,7 +27,7 @@ async function getData(){
     await page.goto('https://upcomingnft.net/most-popular-events/', { waitUntil: 'networkidle0' });
     console.log('page fetched');
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
-    data['upcomingnft'] = getUpcomingnftData(htmlData);
+    data['upcomingnft'] = await getUpcomingnftData(htmlData);
 
 
 
@@ -45,9 +45,7 @@ async function getUpcomingnftData(htmlData){
     // console.log('page fetched');
     // const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
-    // console.log(htmlData);
     var $ = Cheerio.load(htmlData);
-    // $('#movietable', htmlData);
     var formatedData = [];
     var tableRows = $('#movietable tbody tr');
     $(tableRows).each((index, element) => {
@@ -75,7 +73,6 @@ async function getUpcomingnftData(htmlData){
             if(index === 9){
                 childData['websitelink'] = $(element).find('a').attr('href');
             }
-            // console.dir(element)
         })
         formatedData.push(childData);
     });
