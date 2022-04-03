@@ -25,15 +25,15 @@ async function getData(){
 
     const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
 
-    // const oldProxyUrl = process.env.PROXY_SERVER ;
-    // const newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
+    const oldProxyUrl = process.env.PROXY_SERVER ;
+    const newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
 
 
 
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'/*, `--proxy-server=${newProxyUrl}`*/],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=${newProxyUrl}`],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
