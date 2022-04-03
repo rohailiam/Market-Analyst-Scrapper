@@ -2,13 +2,15 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
 const randomUseragent = require('random-useragent');
-const proxyChain = require('proxy-chain');
+const ProxyList = require('free-proxy');
 const Cheerio = require('cheerio');
 const express =  require('express');    
 const { data } = require('cheerio/lib/api/attributes');
 
+
 const app = express();
 const port = 3000;
+const proxyList = new ProxyList();
 
 
 app.get('/getscrapeddata', async (req, res) => {
@@ -27,15 +29,14 @@ async function getData(){
 
     const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
 
-    const oldProxyUrl = process.env.PROXY_SERVER ;
-    const newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
+    let proxyData = await proxyList.random();
 
 
 
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=${newProxyUrl}`],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -119,12 +120,9 @@ async function getUpcomingnftData(htmlData){
 
 async function getTraitsniperData(htmlData){
     var $ = Cheerio.load(htmlData);
-    console.log(htmlData);
-    var formatedData = [];
     var dataObjectFromPage = $('#__NEXT_DATA__').html();
     var websiteDateinJson = JSON.parse(dataObjectFromPage);
     var formatedTraitSniperData = websiteDateinJson['props']['pageProps']['projects'];
-    console.log(formatedTraitSniperData);
     return formatedTraitSniperData;
 }
 
