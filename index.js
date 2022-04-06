@@ -29,9 +29,7 @@ async function getData(){
 
     const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
 
-    let proxyData = await proxyList.random();
-
-
+    // let proxyData = await proxyList.random();
 
     const browser = await puppeteer.launch({
         headless: true,
@@ -77,8 +75,22 @@ async function getData(){
     data['traitsniper'] = await getTraitsniperData(traitSniperHTMLData);
 
 
-    return data;
 
+    //Calling IcyTools 
+    await page.goto('https://icy.tools/discover', { waitUntil: 'networkidle0' });
+    console.log('page fetched');
+    await page.waitFor(3000);
+    await page.click('#__next > main > div > div > div > div > div:nth-child(1) > div > div.flex.flex-col > div > div > div > div > table > thead:nth-child(1) > tr > td:nth-child(2) > div > div > div:nth-child(9) > p > span');
+    console.log('btn clicked I think');
+    await page.waitFor(3000);
+    const icyToolsHTMLData = await page.evaluate(() => document.querySelector('*').outerHTML);
+    data['icytools'] = await getIcytoolsData(icyToolsHTMLData);
+
+
+
+
+
+    return data;
 }
 
 async function getUpcomingnftData(htmlData){
@@ -110,6 +122,7 @@ async function getUpcomingnftData(htmlData){
             if(index === 9){
                 childData['websitelink'] = $(element).find('a').attr('href');
             }
+            console.log(childData);
         })
         formatedData.push(childData);
     });
@@ -125,6 +138,35 @@ async function getTraitsniperData(htmlData){
     var formatedTraitSniperData = websiteDateinJson['props']['pageProps']['projects'];
     return formatedTraitSniperData;
 }
+
+
+async function getIcytoolsData(htmlData){
+    var $ = Cheerio.load(htmlData);
+    var formatedData = [];
+    var table = $('tbody').first();
+    var rows = table.children();
+    $(rows).each((index, element)=>{
+        var chldrn = element.children;
+        var childData = {}
+        $(chldrn).each((index, element)=>{
+            if(index === 0){
+                childData['name'] = $(element).find('a div div p:first-of-type').text();
+            }
+            if(index === 1){
+                childData['mints'] = $(element).find('a p').text();
+            }
+            if(index === 4){
+                childData['alltimes'] = $(element).find('a div p:first-of-type').text();
+            }
+            if(index === 4){
+                childData['opensealink'] = `https://icy.tools${($(element).find('a').attr('href'))}`;
+            }
+        })
+        formatedData.push(childData);
+    })
+    return formatedData;
+}
+
 
 
 app.listen(process.env.PORT || 3000, () => {
