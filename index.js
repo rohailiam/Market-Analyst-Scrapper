@@ -169,7 +169,7 @@ async function getUpcomingnftData(){
             if(index === 9){
                 childData['websitelink'] = $(element).find('a').attr('href');
             }
-            console.log(childData);
+            // console.log(childData);
         })
         formatedData.push(childData);
     });
