@@ -287,7 +287,7 @@ async function getIcytoolsData(){
                 childData['alltimes'] = $(element).find('a div p:first-of-type').text();
             }
             if(index === 4){
-                childData['opensealink'] = "$(element).find('a').attr('href')";
+                childData['opensealink'] = $(element).find('a').attr('href');
             }
         })
         formatedData.push(childData);
