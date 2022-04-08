@@ -174,6 +174,7 @@ async function getUpcomingnftData(){
         formatedData.push(childData);
     });
     console.log('data scraped');
+    await browser.close()
     return formatedData;
 } 
 
@@ -223,6 +224,7 @@ async function getTraitsniperData(){
     var dataObjectFromPage = $('#__NEXT_DATA__').html();
     var websiteDateinJson = JSON.parse(dataObjectFromPage);
     var formatedTraitSniperData = websiteDateinJson['props']['pageProps']['projects'];
+    await browser.close()
     return formatedTraitSniperData;
 }
 
@@ -290,6 +292,7 @@ async function getIcytoolsData(){
         })
         formatedData.push(childData);
     })
+    await browser.close()
     return formatedData;
 }
 
