@@ -36,6 +36,8 @@ const proxyList = new ProxyList();
     res.status(200).json(await getTraitsniperrevealedData());
   })
 
+
+
 async function getData(){
 
     
@@ -334,11 +336,9 @@ async function getOpenSeaData(){
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
     var $ = Cheerio.load(htmlData);
-    var formatedData = [];
-
-    formatedData.push('check');
-
-
+    var dataObjectFromPage = JSON.parse($('#__NEXT_DATA__').html());
+    var formatedData = dataObjectFromPage['props']['relayCache'][0][1]['json']['data']['rankings']['edges'];
+    console.log(formatedData);
 
 
     await browser.close()
