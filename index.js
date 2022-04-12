@@ -338,6 +338,7 @@ async function getOpenSeaData(){
 
     var $ = Cheerio.load(htmlData);
     var dataObjectFromPage = JSON.parse($('#__NEXT_DATA__').html());
+    console.log(dataObjectFromPage);
     var formatedData = dataObjectFromPage['props']['relayCache'][0][1]['json']['data']['rankings']['edges'];
     // console.log(formatedData);
 
