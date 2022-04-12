@@ -12,6 +12,9 @@ const app = express();
 const port = 3000;
 const proxyList = new ProxyList();
 
+  app.get('/', async (req, res) => {
+    res.status(200).send('running');
+  })
 
   app.get('/getupcomingnftdata', async (req, res) => {
     res.status(200).json( await getUpcomingnftData())
@@ -25,10 +28,13 @@ const proxyList = new ProxyList();
     res.status(200).json( await getIcytoolsData())
   })
 
-  app.get('/', async (req, res) => {
-    res.status(200).send('running');
+  app.get('/getopenseadata', async (req, res) => {
+    res.status(200).json(await getOpenSeaData());
   })
   
+  app.get('/gettraitsniperrevealeddata', async (req, res) => {
+    res.status(200).json(await getTraitsniperrevealedData());
+  })
 
 async function getData(){
 
@@ -296,7 +302,95 @@ async function getIcytoolsData(){
     return formatedData;
 }
 
+async function getOpenSeaData(){
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
+    // let proxyData = await proxyList.random();
+    const browser = await puppeteer.launch({
+        headless: true,
+        executablePath: process.env.CHROME_BIN || null, 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        ignoreHTTPSErrors: true,
+        dumpio: false });
+    const page = await browser.newPage();
+    const userAgent = randomUseragent.getRandom();
+    const UA = userAgent || USER_AGENT;
+    console.log('tab created');
+    await page.setViewport({
+        width: 1920 + Math.floor(Math.random() * 100),
+        height: 3000 + Math.floor(Math.random() * 100),
+        deviceScaleFactor: 1,
+        hasTouch: false,
+        isLandscape: false,
+        isMobile: false,
+    });
+    await page.setUserAgent(UA);
+    await page.setJavaScriptEnabled(true);
+    await page.setDefaultNavigationTimeout(0);
 
+
+    await page.goto('https://opensea.io/rankings', { waitUntil: 'networkidle0' });
+    console.log('page fetched');
+
+    const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
+
+    var $ = Cheerio.load(htmlData);
+    var formatedData = [];
+
+    formatedData.push('check');
+
+
+
+
+    await browser.close()
+    return formatedData;
+}
+
+async function getTraitsniperrevealedData(){
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
+
+    // let proxyData = await proxyList.random();
+
+    const browser = await puppeteer.launch({
+        headless: true,
+        executablePath: process.env.CHROME_BIN || null, 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        ignoreHTTPSErrors: true,
+        dumpio: false });
+
+    const page = await browser.newPage();
+
+    const userAgent = randomUseragent.getRandom();
+    const UA = userAgent || USER_AGENT;
+
+    console.log('tab created');
+
+    await page.setViewport({
+        width: 1920 + Math.floor(Math.random() * 100),
+        height: 3000 + Math.floor(Math.random() * 100),
+        deviceScaleFactor: 1,
+        hasTouch: false,
+        isLandscape: false,
+        isMobile: false,
+    });
+    
+    
+    await page.setUserAgent(UA);
+    await page.setJavaScriptEnabled(true);
+    await page.setDefaultNavigationTimeout(0);
+
+
+    await page.goto('https://app.traitsniper.com/?status=revealed', { waitUntil: 'networkidle0' });
+    console.log('page fetched');
+    await page.waitFor(3000);
+    const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
+
+    var $ = Cheerio.load(htmlData);
+    var dataObjectFromPage = $('#__NEXT_DATA__').html();
+    var websiteDateinJson = JSON.parse(dataObjectFromPage);
+    var formatedTraitSniperreveledData = websiteDateinJson['props']['pageProps']['projects'];
+    await browser.close()
+    return formatedTraitSniperreveledData;
+}
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server running at ${port}/`)
