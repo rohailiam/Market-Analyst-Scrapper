@@ -331,6 +331,7 @@ async function getOpenSeaData(){
 
 
     await page.goto('https://opensea.io/rankings', { waitUntil: 'networkidle0' });
+    await page.waitFor(5000);
     console.log('page fetched');
 
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
@@ -338,7 +339,7 @@ async function getOpenSeaData(){
     var $ = Cheerio.load(htmlData);
     var dataObjectFromPage = JSON.parse($('#__NEXT_DATA__').html());
     var formatedData = dataObjectFromPage['props']['relayCache'][0][1]['json']['data']['rankings']['edges'];
-    console.log(formatedData);
+    // console.log(formatedData);
 
 
     await browser.close()
