@@ -178,6 +178,7 @@ async function getTraitsniperData(){
 
 
     await page.goto('https://app.traitsniper.com/?status=unrevealed/', { waitUntil: 'networkidle0' });
+    await page.waitFor(1000);
     console.log('page fetched');
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
