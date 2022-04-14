@@ -28,6 +28,10 @@ const proxyList = new ProxyList();
     res.status(200).json( await getIcytoolsData())
   })
 
+  app.get('/getwatchtowerdata', async (req, res) => {
+    res.status(200).json( await getWatchtowerData())
+  })
+
   app.get('/getopenseadata', async (req, res) => {
     res.status(200).json(await getOpenSeaData());
   })
@@ -300,6 +304,68 @@ async function getIcytoolsData(){
         })
         formatedData.push(childData);
     })
+    await browser.close()
+    return formatedData;
+}
+
+async function getWatchtowerData(){
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
+
+    // let proxyData = await proxyList.random();
+
+    const browser = await puppeteer.launch({
+        headless: true,
+        executablePath: process.env.CHROME_BIN || null, 
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        ignoreHTTPSErrors: true,
+        dumpio: false });
+
+    const page = await browser.newPage();
+
+    const userAgent = randomUseragent.getRandom();
+    const UA = userAgent || USER_AGENT;
+
+    console.log('tab created');
+
+    await page.setViewport({
+        width: 1920 + Math.floor(Math.random() * 100),
+        height: 3000 + Math.floor(Math.random() * 100),
+        deviceScaleFactor: 1,
+        hasTouch: false,
+        isLandscape: false,
+        isMobile: false,
+    });
+    
+    
+    await page.setUserAgent(UA);
+    await page.setJavaScriptEnabled(true);
+    await page.setDefaultNavigationTimeout(0);
+
+
+    await page.goto('https://app.watchtower.cc/pulse', { waitUntil: 'networkidle0' });
+    console.log('page fetched');
+    const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
+
+
+    var $ = Cheerio.load(htmlData);
+    var formatedData = [];
+    var dataTable = $('.content-container div div.overflow-y-scroll div.divide-y').first();
+    var dataRows = $(dataTable).children();
+    dataRows.each((index, element)=>{
+        var childItems = element.children;
+        var childData = {};
+        $(childItems).each((index, element)=>{
+            if(index === 0){
+                childData['name'] = $(element).text().trim();
+            }
+            if(index === 1){
+                childData['volume'] = $(element).find('div div p:nth-child(2)').text();
+            }
+        })
+        formatedData.push(childData);
+    })
+
+    console.log('data scraped');
     await browser.close()
     return formatedData;
 }
