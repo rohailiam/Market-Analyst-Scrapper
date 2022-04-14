@@ -26,11 +26,12 @@ const proxyList = new ProxyList();
   });
 
   app.get('/gettraitsniperdata', async (req, res) => {
-      try {
-        res.status(200).json( await getTraitsniperData())
-      } catch (error) {
-        res.send(error);
-      }
+    //   try {
+    //     res.status(200).json( await getTraitsniperData())
+    //   } catch (error) {
+    //     res.send(error);
+    //   }
+    res.status(200).json( await getTraitsniperData());
   })
 
   app.get('/geticytoolsdata', async (req, res) => {
@@ -58,11 +59,12 @@ const proxyList = new ProxyList();
   })
   
   app.get('/gettraitsniperrevealeddata', async (req, res) => {
-      try {
-        res.status(200).json(await getTraitsniperrevealedData());
-      } catch (error) {
-        res.send(error);
-      }
+    //   try {
+    //     res.status(200).json(await getTraitsniperrevealedData());
+    //   } catch (error) {
+    //     res.send(error);
+    //   }
+      res.status(200).json(await getTraitsniperrevealedData());
   })
 
 
