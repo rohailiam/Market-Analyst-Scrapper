@@ -69,12 +69,10 @@ const proxyList = new ProxyList();
 async function getUpcomingnftData(){
     const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
 
-    // let proxyData = await proxyList.random();
-
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -151,7 +149,7 @@ async function getTraitsniperData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -179,10 +177,7 @@ async function getTraitsniperData(){
 
     await page.goto('https://app.traitsniper.com/?status=unrevealed/', { waitUntil: 'networkidle0' });
     console.log('page fetched');
-    await page.waitFor(3000);
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
-
-    // console.log(htmlData);
 
     var $ = Cheerio.load(htmlData);
     var dataObjectFromPage = $('#__NEXT_DATA__').html();
@@ -202,7 +197,7 @@ async function getIcytoolsData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -268,7 +263,7 @@ async function getWatchtowerData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -328,7 +323,7 @@ async function getOpenSeaData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
     const page = await browser.newPage();
@@ -373,7 +368,7 @@ async function getTraitsniperrevealedData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -401,7 +396,6 @@ async function getTraitsniperrevealedData(){
 
     await page.goto('https://app.traitsniper.com/?status=revealed', { waitUntil: 'networkidle0' });
     console.log('page fetched');
-    await page.waitFor(3000);
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
     var $ = Cheerio.load(htmlData);
