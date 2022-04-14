@@ -20,7 +20,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json( await getUpcomingnftData())
       } catch (error) {
-          res.status(418).json({msg: 'some error occured'})
+          res.send(error);
       }
     
   });
@@ -29,7 +29,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json( await getTraitsniperData())
       } catch (error) {
-        res.status(418).json({msg: 'some error occured'})
+        res.send(error);
       }
   })
 
@@ -37,7 +37,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json( await getIcytoolsData())
       } catch (error) {
-        res.status(418).json({msg: 'some error occured'})
+        res.send(error);
       }
   })
 
@@ -45,7 +45,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json( await getWatchtowerData())
       } catch (error) {
-        res.status(418).json({msg: 'some error occured'})
+        res.send(error);
       }
   })
 
@@ -53,7 +53,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json(await getOpenSeaData());
       } catch (error) {
-        res.status(418).json({msg: 'some error occured'})
+        res.send(error);
       }
   })
   
@@ -61,7 +61,7 @@ const proxyList = new ProxyList();
       try {
         res.status(200).json(await getTraitsniperrevealedData());
       } catch (error) {
-        res.status(418).json({msg: 'some error occured'})
+        res.send(error);
       }
   })
 
