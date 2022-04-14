@@ -74,7 +74,7 @@ async function getUpcomingnftData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -151,7 +151,7 @@ async function getTraitsniperData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -202,7 +202,7 @@ async function getIcytoolsData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -268,7 +268,7 @@ async function getWatchtowerData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
@@ -328,7 +328,7 @@ async function getOpenSeaData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
     const page = await browser.newPage();
@@ -373,7 +373,7 @@ async function getTraitsniperrevealedData(){
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.CHROME_BIN || null, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
         dumpio: false });
 
