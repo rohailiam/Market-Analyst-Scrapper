@@ -17,102 +17,54 @@ const proxyList = new ProxyList();
   })
 
   app.get('/getupcomingnftdata', async (req, res) => {
-    res.status(200).json( await getUpcomingnftData())
+      try {
+        res.status(200).json( await getUpcomingnftData())
+      } catch (error) {
+          res.status(418).json({msg: 'some error occured'})
+      }
+    
   });
 
   app.get('/gettraitsniperdata', async (req, res) => {
-    res.status(200).json( await getTraitsniperData())
+      try {
+        res.status(200).json( await getTraitsniperData())
+      } catch (error) {
+        res.status(418).json({msg: 'some error occured'})
+      }
   })
 
   app.get('/geticytoolsdata', async (req, res) => {
-    res.status(200).json( await getIcytoolsData())
+      try {
+        res.status(200).json( await getIcytoolsData())
+      } catch (error) {
+        res.status(418).json({msg: 'some error occured'})
+      }
   })
 
   app.get('/getwatchtowerdata', async (req, res) => {
-    res.status(200).json( await getWatchtowerData())
+      try {
+        res.status(200).json( await getWatchtowerData())
+      } catch (error) {
+        res.status(418).json({msg: 'some error occured'})
+      }
   })
 
   app.get('/getopenseadata', async (req, res) => {
-    res.status(200).json(await getOpenSeaData());
+      try {
+        res.status(200).json(await getOpenSeaData());
+      } catch (error) {
+        res.status(418).json({msg: 'some error occured'})
+      }
   })
   
   app.get('/gettraitsniperrevealeddata', async (req, res) => {
-    res.status(200).json(await getTraitsniperrevealedData());
+      try {
+        res.status(200).json(await getTraitsniperrevealedData());
+      } catch (error) {
+        res.status(418).json({msg: 'some error occured'})
+      }
   })
 
-
-
-async function getData(){
-
-    
-    // var data = {};
-
-
-    // const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
-
-    // // let proxyData = await proxyList.random();
-
-    // const browser = await puppeteer.launch({
-    //     headless: true,
-    //     executablePath: process.env.CHROME_BIN || null, 
-    //     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    //     ignoreHTTPSErrors: true,
-    //     dumpio: false });
-
-    // const page = await browser.newPage();
-
-    // const userAgent = randomUseragent.getRandom();
-    // const UA = userAgent || USER_AGENT;
-
-    // console.log('tab created');
-
-    // await page.setViewport({
-    //     width: 1920 + Math.floor(Math.random() * 100),
-    //     height: 3000 + Math.floor(Math.random() * 100),
-    //     deviceScaleFactor: 1,
-    //     hasTouch: false,
-    //     isLandscape: false,
-    //     isMobile: false,
-    // });
-    
-    
-    // await page.setUserAgent(UA);
-    // await page.setJavaScriptEnabled(true);
-    // await page.setDefaultNavigationTimeout(0);
-
-
-    // Calling Upcoming NFT
-    // await page.goto('https://upcomingnft.net/most-popular-events/', { waitUntil: 'networkidle0' });
-    // console.log('page fetched');
-    // const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
-    // data['upcomingnft'] = await getUpcomingnftData(htmlData);
-    
-    
-
-    //Calling Traitsniper 
-    // await page.goto('https://app.traitsniper.com/?status=unrevealed', { waitUntil: 'networkidle0' });
-    // console.log('page fetched');
-    // const traitSniperHTMLData = await page.evaluate(() => document.querySelector('*').outerHTML);
-    // data['traitsniper'] = await getTraitsniperData(traitSniperHTMLData);
-
-
-
-    // //Calling IcyTools 
-    // await page.goto('https://icy.tools/discover', { waitUntil: 'networkidle0' });
-    // console.log('page fetched');
-    // await page.waitFor(3000);
-    // await page.click('#__next > main > div > div > div > div > div:nth-child(1) > div > div.flex.flex-col > div > div > div > div > table > thead:nth-child(1) > tr > td:nth-child(2) > div > div > div:nth-child(9) > p > span');
-    // console.log('btn clicked I think');
-    // await page.waitFor(3000);
-    // const icyToolsHTMLData = await page.evaluate(() => document.querySelector('*').outerHTML);
-    // data['icytools'] = await getIcytoolsData(icyToolsHTMLData);
-
-
-
-
-
-    return data;
-}
 
 async function getUpcomingnftData(){
     const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
@@ -230,7 +182,7 @@ async function getTraitsniperData(){
     await page.waitFor(3000);
     const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
-    console.log(htmlData);
+    // console.log(htmlData);
 
     var $ = Cheerio.load(htmlData);
     var dataObjectFromPage = $('#__NEXT_DATA__').html();
