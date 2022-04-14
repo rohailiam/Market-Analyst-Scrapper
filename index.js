@@ -6,6 +6,7 @@ const ProxyList = require('free-proxy');
 const Cheerio = require('cheerio');
 const express =  require('express');    
 const { data } = require('cheerio/lib/api/attributes');
+const { html } = require('cheerio/lib/static');
 
 
 const app = express();
@@ -180,11 +181,13 @@ async function getTraitsniperData(){
     await page.goto('https://app.traitsniper.com/?status=unrevealed/', { waitUntil: 'networkidle0' });
     await page.waitFor(1000);
     console.log('page fetched');
-    const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
 
+    const htmlData = await page.evaluate(() => document.querySelector('*').outerHTML);
+    console.log(htmlData);
     var $ = Cheerio.load(htmlData);
     var dataObjectFromPage = $('#__NEXT_DATA__').html();
     var websiteDateinJson = JSON.parse(dataObjectFromPage);
+    console.log(websiteDateinJson);
     var formatedTraitSniperData = websiteDateinJson['props']['pageProps']['projects'];
     await browser.close()
     return formatedTraitSniperData;
