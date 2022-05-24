@@ -1,0 +1,245 @@
+function fetchData() {
+
+  var app = SpreadsheetApp;
+  var activeSpreadsheet = app.getActiveSpreadsheet();
+  Logger.log('Clearing all content');
+  clearSheetsContent();
+
+
+  //Getting and Setting upcoming NFT data
+  try {
+    Logger.log('UpcomingNFT data process started');
+    activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[0]);
+    var activeSheet = activeSpreadsheet.getActiveSheet();
+    getandsetupcomingnftdata();
+    function getandsetupcomingnftdata() {
+      const content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/getupcomingnftdata');
+      var jsonData = JSON.parse(content);
+      Logger.log('UpcomingNFT Data Fetched from server');
+      setUpcomingnftdata(jsonData)
+    }
+  } catch {
+    Logger.log('UpcomingNFT data process failed');
+  }
+
+
+  // //Getting and Setting Minty Score data
+  try {
+    Logger.log('MintyScore data process started');
+    activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[1]);
+    var activeSheet = activeSpreadsheet.getActiveSheet();
+    setMintyscoredata();
+  } catch {
+    Logger.log('MintyScore data process failed');
+  }
+
+
+  // //Getting and Setting TraitSniper Data
+  // try {
+  //   Logger.log('TraitSniper data process started');
+  //   activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[2]);
+  //   var activeSheet = activeSpreadsheet.getActiveSheet();
+  //   getandsettraitsniperdata();
+  //   function getandsettraitsniperdata() {
+  //     const content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/gettraitsniperdata');
+  //     var jsonData = JSON.parse(content);
+  //     Logger.log('TraitSniper data fetched from the server');
+  //     setTraitsniper(jsonData)
+  //   }
+  // } catch {
+  //   Logger.log('TraitSniper data process faild');
+  // }
+
+
+  // //Getting and Setting Icy Tools Data
+  // try {
+  //   Logger.log('Icytools data process started');
+  //   activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[3]);
+  //   var activeSheet = activeSpreadsheet.getActiveSheet();
+  //   getandsetIcytoolsdata();
+  //   function getandsetIcytoolsdata() {
+  //     const content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/geticytoolsdata');
+  //     var jsonData = JSON.parse(content);
+  //     // Logger.log(jsonData)
+  //     setIcytoolsdata(jsonData)
+  //   }
+  // } catch {
+  //   Logger.log('Icytools data process faild');
+  // }
+
+
+  //Getting and Setting Opensea Data
+  try {
+    Logger.log('Opensea data process started');
+    activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[5]);
+    var activeSheet = activeSpreadsheet.getActiveSheet();
+    var content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/getopenseadata');
+    Logger.log(content)
+    getandsetopenseadata(content);
+  } catch {
+    Logger.log('Opensea data process failed');
+  }
+
+
+  //Getting and Setting Watchtower Data
+  try {
+    Logger.log('Watch Tower data process started');
+    activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[4]);
+    var activeSheet = activeSpreadsheet.getActiveSheet();
+    var content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/getwatchtowerdata');
+    var jsonData = JSON.parse(content);
+    getAndSetWatchTowerData(jsonData);
+  } catch {
+    Logger.log('Watch Tower data process failed');
+  }
+
+
+  // //Getting and Setting TraitSniper Data
+  // try {
+  //   Logger.log('Traitsniper data process started');
+  //   activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[6]);
+  //   var activeSheet = activeSpreadsheet.getActiveSheet();
+  //   var content = UrlFetchApp.fetch('https://rohail-web-scrapper.herokuapp.com/gettraitsniperrevealeddata');
+  //   var jsonData = JSON.parse(content);
+  //   setTraitsniperrevelead(jsonData)
+  // } catch {
+  //   Logger.log('Traitsniper data process failed');
+  // }
+
+
+
+
+  //Function to set Upcomingnft Data
+  function setUpcomingnftdata(upcomingnftdata) {
+    for (let row = 0; row <= 24; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(upcomingnftdata[row].name);
+      activeSheet.getRange(row + 3, 2).setValue(upcomingnftdata[row].price);
+      activeSheet.getRange(row + 3, 3).setValue(upcomingnftdata[row].supply);
+      activeSheet.getRange(row + 3, 4).setValue(upcomingnftdata[row].twitterfollower);
+      activeSheet.getRange(row + 3, 5).setValue(upcomingnftdata[row].twitterlink);
+      activeSheet.getRange(row + 3, 6).setValue(upcomingnftdata[row].discordnumber);
+      activeSheet.getRange(row + 3, 7).setValue(upcomingnftdata[row].discordlink);
+      activeSheet.getRange(row + 3, 8).setValue(upcomingnftdata[row].websitelink);
+    }
+    Logger.log('UpcomingNFT Data is written on the sheet successfully.');
+  }
+
+
+  //Function to set Mintyscore Data
+  function setMintyscoredata() {
+    var mintyURL = "https://api.mintyscore.com/api/v1/nfts/projects?desc=true&chain=all&status=upcoming&sort_by=minty_score&include_hidden=false";
+    var response = UrlFetchApp.fetch(mintyURL);
+    var mintyJSONData = JSON.parse(response);
+    Logger.log('MintyScore data fetched from the server.');
+    var MintyData = mintyJSONData['result'];
+    for (let row = 0; row < 100; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(MintyData[row].name);
+      activeSheet.getRange(row + 3, 2).setValue(MintyData[row].minty_score);
+      activeSheet.getRange(row + 3, 3).setValue(MintyData[row].twitter_follower_count);
+      activeSheet.getRange(row + 3, 4).setValue(MintyData[row].twitter_link);
+      activeSheet.getRange(row + 3, 5).setValue(MintyData[row].discord_member_count);
+      activeSheet.getRange(row + 3, 6).setValue(MintyData[row].discord_link);
+      activeSheet.getRange(row + 3, 7).setValue(MintyData[row].website_link);
+    }
+    Logger.log('MintyScore data written on the sheet successfully');
+  }
+
+
+  //Function to set Traitsniper Data
+  function setTraitsniper(traitsniperdata) {
+    var len = traitsniperdata.length;
+    for (let row = 0; row < len; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(traitsniperdata[row].nft_name);
+      activeSheet.getRange(row + 3, 2).setValue(traitsniperdata[row].floor_price);
+      activeSheet.getRange(row + 3, 3).setValue(traitsniperdata[row].supply);
+      activeSheet.getRange(row + 3, 4).setValue(traitsniperdata[row].discord);
+      activeSheet.getRange(row + 3, 5).setValue(`https://www.twitter.com/${traitsniperdata[row].twitter}`);
+      activeSheet.getRange(row + 3, 6).setValue(traitsniperdata[row].website);
+    }
+    Logger.log('TraitSniper data written on the screen successfully');
+  }
+
+
+  //Function to get Watch Tower Data
+  function getAndSetWatchTowerData(data) {
+    let len = data.length;
+    for (let row = 0; row < len; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(data[row].name);
+      activeSheet.getRange(row + 3, 2).setValue(data[row].volume);
+    }
+    Logger.log('Watchtower data written on the screen successfully');
+  }
+
+
+  //Function to set icy.tools Data
+  function setIcytoolsdata(icytoolsdata) {
+    let len = icytoolsdata.length;
+    for (let row = 0; row < len; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(icytoolsdata[row].name);
+      activeSheet.getRange(row + 3, 2).setValue(icytoolsdata[row].mints);
+      activeSheet.getRange(row + 3, 3).setValue(icytoolsdata[row].alltimes);
+      activeSheet.getRange(row + 3, 4).setValue(getopensealink(icytoolsdata[row].opensealink));
+    }
+
+    function getopensealink(oldlink) {
+      var pageContent = UrlFetchApp.fetch(`https://icy.tools${oldlink}`).getContentText();
+      var $ = Cheerio.load(pageContent);
+      var dataObjectFromPage = JSON.parse($('#__NEXT_DATA__').html());
+      var address = oldlink.slice(13, -9);
+      var opensealink = `https://opensea.io/collection/${dataObjectFromPage['apolloState'][`Collection:{\"address\":\"${address}\"}`]['slug']}`;
+      return opensealink
+    }
+    Logger.log('OpenSea data written to the sheet successfully');
+  }
+
+
+  //Function to set opensea Data
+  function getandsetopenseadata(data) {
+    let len = data.length();
+    // var jsonData = JSON.parse(content); 
+    Logger.log(data);
+    Logger.log(len);
+    for (let row = 0; row < 1; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(data[row].name);
+      activeSheet.getRange(row + 3, 2).setValue(data[row].floorPrice);
+      activeSheet.getRange(row + 3, 3).setValue(data[row].numOwners);
+      activeSheet.getRange(row + 3, 4).setValue('check');
+    }
+    Logger.log('Icy.tools data written to the sheet successfully');
+  }
+
+
+  //Function to set Traitsniper Revealed Data
+  function setTraitsniperrevelead(traitsniperdata) {
+    var len = traitsniperdata.length;
+    for (let row = 0; row < len; row++) {
+      activeSheet.getRange(row + 3, 1).setValue(traitsniperdata[row].nft_name);
+      activeSheet.getRange(row + 3, 2).setValue(traitsniperdata[row].floor_price);
+      activeSheet.getRange(row + 3, 3).setValue(traitsniperdata[row].supply);
+      activeSheet.getRange(row + 3, 4).setValue(traitsniperdata[row].discord);
+      activeSheet.getRange(row + 3, 5).setValue(`https://www.twitter.com/${traitsniperdata[row].twitter}`);
+      activeSheet.getRange(row + 3, 6).setValue(traitsniperdata[row].website);
+    }
+  }
+
+
+  //Function to clear the content of the sheet
+  function clearSheetsContent() {
+    for( let i = 0; i < 4; i++){
+      activeSpreadsheet.setActiveSheet(activeSpreadsheet.getSheets()[i]);
+      var activeSheet = activeSpreadsheet.getActiveSheet();
+      clearSheet();
+    }
+    function clearSheet() {
+      var noOfRows = activeSheet.getLastRow();
+      var noOfCols = activeSheet.getLastColumn();
+      for (let row = 3; row <= noOfRows; row++) {
+        for (let cols = 1; cols <= noOfCols; cols++) {
+          activeSheet.getRange(row, cols).clearContent();
+        }
+      }
+    }
+
+  }
+
+}
