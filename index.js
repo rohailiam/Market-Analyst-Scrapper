@@ -22,7 +22,7 @@ async function scrapData(link) {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
     ignoreHTTPSErrors: true,
     dumpio: false,
-  });
+  }); 
   const page = await browser.newPage();
   const userAgent = randomUseragent.getRandom();
   const UA = userAgent || USER_AGENT;
