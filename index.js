@@ -46,10 +46,10 @@ async function scrapData(link) {
   const htmlData = await page.evaluate(
     () => document.querySelector("*").outerHTML
   );
-
+  console.log(htmlData);
   var $ = Cheerio.load(htmlData);
   var data = { name: $("span.object-header__title").text() };
-  var tables = $("dl.object-kenmerken-list");
+  var tables = $("dl.object-kenmerken-list").first();
   tables.each((index, element) => {
     var chldrn = element.children;
     var key1, val1;
