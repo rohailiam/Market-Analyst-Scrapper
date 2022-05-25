@@ -16,7 +16,8 @@ app.post("/post", async (req, res) => {
 async function scrapData(link) {
   const USER_AGENT =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
-  const browser = await puppeteer.launch({
+  puppeteer.use(StealthPlugin());
+    const browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.CHROME_BIN || null,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
