@@ -8,7 +8,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-app.post("/post", async (req, res) => {
+app.get("/post", async (req, res) => {
   var link = req.query.link;
   res.status(200).send(await scrapData(link));
 });
@@ -47,7 +47,7 @@ async function scrapData(link) {
   const htmlData = await page.evaluate(
     () => document.querySelector("*").outerHTML
   );
-  console.log(htmlData);
+  // console.log(htmlData);
   var $ = Cheerio.load(htmlData);
   var data = { name: $("span.object-header__title").text() };
   var tables = $("dl.object-kenmerken-list").first();
